@@ -1,0 +1,27 @@
+{
+    "variables": {
+        "project_id": "{{env `PROJECT_ID`}}"
+      },
+      
+    "builders": [
+      {
+        "type": "googlecompute",
+        "account_file": "../account-folder/account.json",
+        "project_id": "{{user `project_id`}}",
+        "source_image": "ubuntu-1604-xenial-v20180306",
+        "ssh_username": "packer",
+        "zone": "us-central1-b",
+        "image_name": "opencart-base-image"
+      }
+    ],
+
+    "provisioners": [
+        {
+            "type": "shell",
+            "environment_vars": ["ROOT_PASSWORD={{user `ROOT_PASSWORD`}}",
+                "OPEN_CART_PASSWORD={{user `OPEN_CART_PASSWORD`}}"],
+            "script": "./setup.sh"
+        }
+    ]
+    
+  }
