@@ -1,0 +1,7 @@
+region=<the GCP region you'd like to create your infrastructure. Should be the same region as where you created your IP address>
+zone=<the GCP zone you'd like to create your infrastructure.>
+project=<your GCP project>
+ip-address=<the IP address for your application>
+server_admin=<any server admin address you'd like for your domain e.g. admin.crispuskamau.com (cannot be null for now)>
+server_name= <the domain pointing to your IP address e.g. opencart.crispuskamau.com>
+server_alias= <any alias you'd like for your domain e.g. www.crispuskamau.com (cannot be null for now)>

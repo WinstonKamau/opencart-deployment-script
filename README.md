@@ -57,11 +57,69 @@ packer build packer.json
 ```
 After running the commands above ensure that you have a custom image called opencart-base-image on your Google Cloud Platform project.
 
+### Deploying the application.
 
 
+#### Setting up Google Cloud Platform for deployment.
+
+1. Create a storage bucket
+First we need to start by creating a storage bucket. Terraform needs to store a file in this storage bucket, which it can use to continuously check in the current state and determine what the desired state will be, before building infrastructure on your platform. Instructions for creating a storage bucket can be found [here](https://cloud.google.com/storage/docs/creating-buckets). Once you are done take note of the name of the bucket that you just created as we shall use it later when running terraform commands.
+
+2. Reserve a static external IP address.
+Steps for reserving this can be found [here](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#reserve_new_static). We need an external IP address through which we shall be able to access our site. The reason we choose an external IP address rather than an ephemeral IP address, is because we need something longterm that we are going to point our domain address to. Take note of the IP address you reserved as we shall also use it later.
+
+3. Enable APIs and services.
+Instructions for enabling an API and Services can be found [here](https://cloud.google.com/endpoints/docs/openapi/enable-api).
+Ensure that the Compute Engine API is enabled.
+
+3. Setup the service account(Has one extra role Storage Object Admin, compared to the roles we provides to the Packer job above.)
+
+You may follow instruction on creating a service account as per this [link](https://cloud.google.com/iam/docs/creating-managing-service-accounts). The most critical part of the service account is the role that the account will be able to perform. Ensure that the service account has at lease admin capabilities of **Compute Image User**, **Compute Instance Admin (v1)**, **Service Account User** and **Storage Object Admin**. Download the Service Account JSON key to your machine after giving the Service Account its roles.
+
+Create a folder for the key with the name below. The spelling is necessary to be as specified below since the packer scripts will be looking for a folder with that name. (Note that if you created this before on the steps for using packer, there is no need to do it again.)
+```
+mkdir account-folder
+```
+Create a file under the folder with the name below.
+```
+touch account-folder/account.json
+```
+Copy the contents of the JSON service key into the account.json file.
+
+#### Running Terraform scripts
+
+1. Pass environment variables
+
+Our deployment script requires some environment variables. Create a file called terraform.tfvars on the root of your repository. You can derive the structure of secrets needed using the [terrafrom.tfvars.example](terraform.tfvars.example) file on the root of your repository. Replace each of the secret with its respective value.
 
 
+2. Initializing terraform. 
+First step involves initializing terraform. To perform this step you need to have the name of your storage bucket that you created on Step 1 of [Setting up Google Cloud Platform for deployment.](#setting-up-google-cloud-platform-for-deployment)
 
+Run the command below on the root of your repository:
+```
+terraform init
+```
 
+You should get a response like the one below. I have white-listed the name of my storage bucket.
 
+![Terraform init](docs/images/terraform-init.png?raw=true)
 
+3. Create a plan.
+The second step involves creating a terraform plan. This produces an output on the console indicating the plan that terraform will execute.
+Run the command below on the root of your repository:
+```
+terraform plan
+```
+
+![Terraform plan](docs/images/terraform-plan.png?raw=true)
+
+4. Create the infrastructure.
+
+If you are comfortable with the plan shown in the step above, then create the infrastructure needed for the application by running the command below.
+
+```
+terraform apply
+```
+
+After running the command above you can visit your infrastructure and check whether your VM instance has been created.
