@@ -1,2 +1,6 @@
 # ignore service account file to prevent its exposure to Github
 account-folder/account.json
+# ignore terraform variables in a file
+terraform.tfvars
+.DS_Store
+.terraform
