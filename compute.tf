@@ -5,7 +5,7 @@ resource "google_compute_instance" "opencart-instance" {
   zone         = "${var.zone}"
   name         = "opencart-instance"
   machine_type = "g1-small"
-  tags = ["http-server"]
+  tags = ["http-firewall"]
 
   boot_disk {
     initialize_params {

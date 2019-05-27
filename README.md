@@ -86,9 +86,9 @@ We need an external Static IP address through which we shall be able to access o
 Instructions for enabling an API and Services can be found [here](https://cloud.google.com/endpoints/docs/openapi/enable-api).
 Ensure that the Compute Engine API is enabled.
 
-3. Setup the service account(Has one extra role **Storage Object Admin**, compared to the roles we provide to the Packer steps above.)
+3. Setup the service account
 
-You may follow instructions on creating a service account as per this [link](https://cloud.google.com/iam/docs/creating-managing-service-accounts). The most critical part of the service account is the role that the account will be able to perform. Ensure that the service account has at lease admin capabilities of **Compute Image User**, **Compute Instance Admin (v1)**, **Service Account User** and **Storage Object Admin**. Download the Service Account JSON key to your machine after giving the Service Account its roles.
+You may follow instructions on creating a service account as per this [link](https://cloud.google.com/iam/docs/creating-managing-service-accounts). The most critical part of the service account is the role that the account will be able to perform. Ensure that the service account has at lease admin capabilities of **Compute Admin**, **Compute Network Admin**, **Service Account User** and **Storage Object Admin**. Download the Service Account JSON key to your machine after giving the Service Account its roles.
 
 Create a folder for the key with the name below. The spelling is necessary to be as specified below since the packer scripts will be looking for a folder with that name. (Note that if you created this before on the steps for using packer, there is no need to do it again.)
 ```
