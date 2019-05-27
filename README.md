@@ -4,12 +4,16 @@ The information below explains how to set up our LAMP stack. In the steps below 
 
 ### Creating the Packer Base Image on Google Cloud Platform
 
-The first step towards setting up the Open Cart website begins by creating a base image. A base image in our case refers to snapshot of a Linux Distribution instance, that contains all the services and packages needed for the Open Cart website to run. 
-Currently our Linux Distribution used is Ubuntu version 16.04. The reason Ubuntu was chosen is because it is an open source distribution that has a large community supporting it. It is also freely sold in many cloud platforms making it cost friendly. I needed a distribution that centers on it being easy for me to configure, price friendly and one that I can get access to material for configurations. I chose version 16.04 because it is currently stable as per the chart below.
+The first step towards setting up the Open Cart website begins by creating a base image. A base image in our case refers to snapshot of a Linux Distribution instance, that contains all the services and packages needed for the Open Cart website to run. To achieve this we use [Packer](https://www.packer.io). **Packer** is an open source tool for creating identical machine images for multiple platforms from a single source configuration. We use it to create a machine image that will be used by all deployments for Open Cart.
+
+Currently our Linux Distribution used is **Ubuntu** version 16.04. The reason Ubuntu was chosen is because it is an open source distribution that has a large community supporting it. It is also freely sold in many cloud platforms making it cost friendly. I needed a distribution that centers on it being easy for me to configure, price friendly and one that I can get access to material for configurations. I chose version 16.04 because it is currently stable as per the chart below.
 ![Ubuntu Chart](docs/images/ubuntu_release_chart.png?raw=true)
 Source: https://www.ubuntu.com/about/release-cycle
 
-The second requirement for our Base Image is the installation of the Apache web server, MySQL database and PHP. All this is configured on the [setup](open-cart-base-image/setup.sh) file. A weakness of our current setup is that the database of the application will be located on the Virtual Machine. This means that the data is ephemeral for every deployment. However the requirements of the task do not require us to meet that scope. 
+
+The second requirement for our Base Image is the installation of the Apache web server, MySQL database and PHP. All this is configured on the [setup](open-cart-base-image/setup.sh) file. This file is configured using **Bash Script**. 
+
+A weakness of our current setup is that the database of the application will be located on the Virtual Machine. This means that the data is ephemeral for every deployment. However the requirements of the task do not require us to meet that scope. 
 
 1. Ensure that:
 - You have a [Google Cloud Platform](https://console.cloud.google.com) account.
@@ -59,6 +63,8 @@ packer build packer.json
 After running the commands above ensure that you have a custom image called opencart-base-image on your Google Cloud Platform project.
 
 ### Deploying the application.
+
+To deploy our application, we need to set up the infrastructure that will be running on Google Cloud Platform. This will require creating a virtual machine for our website, and setting up networking for the VM. This process will need to be done for every deployment, therefore requiring automation. To automate it we need a scripting language to enable us achieve infrastructure as code. To do this we choose **Terraform**. I value [terraform](https://www.terraform.io/) for its ease of use, its integration with many cloud environments, its high support; with new versions being released frequently, its quality of being free with good documentation.
 
 
 #### Setting up Google Cloud Platform for deployment.
