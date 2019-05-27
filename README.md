@@ -75,7 +75,11 @@ First we need to start by creating a storage bucket. Terraform needs to store a 
 
 2. Reserve a static external IP address.
 
-Steps for reserving this can be found [here](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#reserve_new_static). We need an external IP address through which we shall be able to access our site. The reason we choose an external IP address rather than an ephemeral IP address, is because we need something longterm that we are going to point our domain address to. Take note of the IP address you reserved as we shall also use it later.
+Steps for reserving this can be found [here](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#reserve_new_static). Note that when reserving an IP address, create it in a region where you would like to create your opencart VM so that you may not have difficulty attaching it to an instance. This is as shown below, where the user intends to create the VM in the us-east1 region:
+![IP address reservation Image](docs/images/regional-ip-address.png?raw=true)
+Most instances are regional and if given a regional IP address in a different region from their own an error is raised when creating the script.
+
+We need an external Static IP address through which we shall be able to access our site. The reason we choose an external Static IP address rather than an ephemeral IP address, is because we need something long-term that we are going to point our domain address to. Take note of the IP address you reserved as we shall also use it later.
 
 3. Enable APIs and services.
 
@@ -133,3 +137,6 @@ terraform apply
 ```
 
 After running the command above you can visit your infrastructure and check whether your VM instance has been created.
+
+**Note**
+- If you have an issue with running the `terraform init` command when setting up the environment variables, sometimes deleting the .terraform folder that is created locally on the folder where you ran the command, will help.
