@@ -1,0 +1,8 @@
+{
+    "root_password": "the password you want to create your mysql root user with",
+    "open_cart_user": "the name of the user you'd like opencart to use to access your database",
+    "open_cart_database": "the name of the database you'd like opencart to use"
+    "open_cart_password": "the password you want to create your opencart database user with",
+    "project_id": "your google cloud platform project id"
+  }
+  
