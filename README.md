@@ -46,21 +46,34 @@ Copy the contents of the JSON service key into the account.json file.
 
 4. Setup environment variables.
 
-For environment variables you will need to provide your google cloud project id, the root password you would desire for your root mysql password and the password you will require for your opencart user for the database.
-```
-export PROJECT_ID={place your google cloud project id here}
-export ROOT_PASSWORD={place a root password for the root MySQL user here}
-export OPEN_CART_PASSWORD={place a root password for the opencart MYSQL user here}
-```
+Let's start by changing the name of the [variables.json.example](open-cart-base-image/variables.json.example) file to variables.json.
+
+Next, provide values for each of the keys shown in the table below. A description of the value needed has been given:
+
+| **Key**           | **Value Description**|
+|-------------------|----------------------|
+| root_password     | Provide the password you'd like the root user for your mysql database to have|
+| open_cart_user    | Provide the name of the user you'd like to own your opencart mysql database|
+| open_cart_database| Provide the name of the mysql database you'd like opencart to use |
+| open_cart_password| Provide the password you'd like the open cart user for your mysql database to have|
+| project_id        | Provide the google project id where you are hosting your application on|
+
+
 
 4. Validate and build the base image.
 
 ```
 cd open-cart-base-image
-packer validate packer.json
-packer build packer.json
+packer validate --var-file variables.json packer.json
+packer build --var-file variables.json packer.json
 ```
-After running the commands above ensure that you have a custom image called opencart-base-image on your Google Cloud Platform project.
+
+5. Visit GCP console to confirm that your image has been created.
+
+On the menu page under Compute Engine click on Images.
+![Images-GCE-Menu](docs/images/images-gce.png)
+You should be able to see the image opencart-base-image on the list of images.
+![Opencart-Base-Image](docs/images/opencart-base-image.png)
 
 ### Deploying the application.
 
