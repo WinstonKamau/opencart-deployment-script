@@ -35,10 +35,10 @@ configure_apache() {
  cat <<EOF | sudo tee -a /etc/apache2/sites-available/opencart.conf
 <VirtualHost *:80>
      ServerAdmin ${SERVER_ADMIN}
-     DocumentRoot /var/www/html/opencart/
+     DocumentRoot /var/www/html/
      ServerName ${SERVER_NAME}
      ServerAlias ${SERVER_ALIAS}
-     <Directory /var/www/html/opencart/>
+     <Directory /var/www/html/>
         Options FollowSymlinks
         AllowOverride All
         Order allow,deny
