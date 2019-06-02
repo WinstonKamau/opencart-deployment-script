@@ -34,7 +34,7 @@ cd opencart-deployment-script
 
 You may follow instructions on creating a service account as per this [link](https://cloud.google.com/iam/docs/creating-managing-service-accounts). The most critical part of the service account is the role that the account will be able to perform. Ensure that the service account has at lease admin capabilities of **Compute Image User**, **Compute Instance Admin** and **Service Account Actor**. Download the Service Account JSON key to your machine after giving the Service Account its roles.
 
-Once you have gotten the key, change the name of the file[account-folder/account.json.example](account-folder/account.json.example) to accounts.json. Delete the contents in the file and paste your JSON key here.
+Once you have gotten the key, change the name of the file [account.json.example](account-folder/account.json.example) to account.json. *This file is located under the account-folder directory*. Delete the contents in the file and paste your JSON key here.
 
 4. Setup environment variables.
 
@@ -95,7 +95,7 @@ Ensure that the Compute Engine API is enabled.
 
 You may follow instructions on creating a service account as per this [link](https://cloud.google.com/iam/docs/creating-managing-service-accounts). The most critical part of the service account is the role that the account will be able to perform. Ensure that the service account has at lease admin capabilities of **Compute Admin**, **Compute Network Admin**, **Service Account User** and **Storage Object Admin**. Download the Service Account JSON key to your machine after giving the Service Account its roles.
 
-Once you have gotten the key, change the name of the file[account-folder/account.json.example](account-folder/account.json.example) to accounts.json. Delete the contents in the file and paste your JSON key here.
+Once you have gotten the key, change the name of the file [account.json.example](account-folder/account.json.example) to account.json. *This file is located under the account-folder directory*. Delete the contents in the file and paste your JSON key here.
 
 
 #### Running Terraform scripts
