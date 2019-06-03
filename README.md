@@ -158,7 +158,7 @@ Click the continue button on the Pre-Installation page if all checks out.
 3. Visit the configuration page and input the required fields.
 
     - For the database connection details, it is necesary that you provide the Username of the opencart mysql user, the opencart user's password and the database name that you provided in Step 4 of [Creating the Packer Base Image on Google Cloud Platform](#creating-the-packer-base-image-on-google-cloud-platform). Do not provide the root user's credentials.
-    - Create new credentials for and admin for you site. 
+    - Create new credentials for an admin for you site. 
 
 ![Configuration-page](docs/images/opencart-configuration.png)
 
@@ -185,6 +185,6 @@ Click the continue button on the Pre-Installation page if all checks out.
     - Edit the config.php and admin/config.php files as shown below: 
 ![Storage-Instructions](docs/images/admin-security-requirements.png) 
 
-7. You can now use the application and install data by visiting the admin page on /admin/
+7. You can now use the application and install data by visiting the admin page on /admin/. Get more documentation from https://www.opencart.com/
 
 
