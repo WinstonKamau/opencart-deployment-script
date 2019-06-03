@@ -1,6 +1,10 @@
 {
     "variables": {
-        "project_id": "{{env `PROJECT_ID`}}"
+        "project_id": null,
+        "root_password": null,
+        "open_cart_password": null,
+        "open_cart_user": null,
+        "open_cart_database": null
       },
       
     "builders": [
@@ -18,8 +22,10 @@
     "provisioners": [
         {
             "type": "shell",
-            "environment_vars": ["ROOT_PASSWORD={{user `ROOT_PASSWORD`}}",
-                "OPEN_CART_PASSWORD={{user `OPEN_CART_PASSWORD`}}"],
+            "environment_vars": ["ROOT_PASSWORD={{user `root_password`}}",
+                "OPEN_CART_PASSWORD={{user `open_cart_password`}}",
+                "OPEN_CART_USER={{user `open_cart_user`}}",
+                "OPEN_CART_DATABASE={{user `open_cart_database`}}"],
             "script": "./setup.sh"
         }
     ]

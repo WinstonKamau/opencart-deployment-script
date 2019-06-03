@@ -4,3 +4,5 @@ account-folder/account.json
 terraform.tfvars
 .DS_Store
 .terraform
+# ignore packer secret
+open-cart-base-image/variables.json

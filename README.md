@@ -32,35 +32,40 @@ cd opencart-deployment-script
 
 3. Setup the service account
 
-You may follow instruction on creating a service account as per this [link](https://cloud.google.com/iam/docs/creating-managing-service-accounts). The most critical part of the service account is the role that the account will be able to perform. Ensure that the service account has at lease admin capabilities of **Compute Image User**, **Compute Instance Admin** and **Service Account Actor**. Download the Service Account JSON key to your machine after giving the Service Account its roles.
+You may follow instructions on creating a service account as per this [link](https://cloud.google.com/iam/docs/creating-managing-service-accounts). The most critical part of the service account is the role that the account will be able to perform. Ensure that the service account has at lease admin capabilities of **Compute Image User**, **Compute Instance Admin** and **Service Account Actor**. Download the Service Account JSON key to your machine after giving the Service Account its roles.
 
-Create a folder for the key with the name below. The spelling is necessary to be as is since the packer scripts will be looking for a folder with that name.
-```
-mkdir account-folder
-```
-Create a file under the folder with the name below.
-```
-touch account-folder/account.json
-```
-Copy the contents of the JSON service key into the account.json file.
+Once you have gotten the key, change the name of the file [account.json.example](account-folder/account.json.example) to account.json. *This file is located under the account-folder directory*. Delete the contents in the file and paste your JSON key here.
 
 4. Setup environment variables.
 
-For environment variables you will need to provide your google cloud project id, the root password you would desire for your root mysql password and the password you will require for your opencart user for the database.
-```
-export PROJECT_ID={place your google cloud project id here}
-export ROOT_PASSWORD={place a root password for the root MySQL user here}
-export OPEN_CART_PASSWORD={place a root password for the opencart MYSQL user here}
-```
+Let's start by changing the name of the [variables.json.example](open-cart-base-image/variables.json.example) file to variables.json.
+
+Next, provide values for each of the keys shown in the table below. A description of the value needed has been given:
+
+| **Key**           | **Value Description**|
+|-------------------|----------------------|
+| root_password     | Provide the password you'd like the root user for your mysql database to have|
+| open_cart_user    | Provide the name of the user you'd like to own your opencart mysql database|
+| open_cart_database| Provide the name of the mysql database you'd like opencart to use |
+| open_cart_password| Provide the password you'd like the open cart user to authenticate with|
+| project_id        | Provide the google project id where you are hosting your application on|
+
+
 
 4. Validate and build the base image.
 
 ```
 cd open-cart-base-image
-packer validate packer.json
-packer build packer.json
+packer validate --var-file variables.json packer.json
+packer build --var-file variables.json packer.json
 ```
-After running the commands above ensure that you have a custom image called opencart-base-image on your Google Cloud Platform project.
+
+5. Visit GCP console to confirm that your image has been created.
+
+On the menu page under Compute Engine click on Images.
+![Images-GCE-Menu](docs/images/images-gce.png)
+You should be able to see the image opencart-base-image on the list of images.
+![Opencart-Base-Image](docs/images/opencart-base-image.png)
 
 ### Deploying the application.
 
@@ -90,15 +95,8 @@ Ensure that the Compute Engine API is enabled.
 
 You may follow instructions on creating a service account as per this [link](https://cloud.google.com/iam/docs/creating-managing-service-accounts). The most critical part of the service account is the role that the account will be able to perform. Ensure that the service account has at lease admin capabilities of **Compute Admin**, **Compute Network Admin**, **Service Account User** and **Storage Object Admin**. Download the Service Account JSON key to your machine after giving the Service Account its roles.
 
-Create a folder for the key with the name below. The spelling is necessary to be as specified below since the packer scripts will be looking for a folder with that name. (Note that if you created this before on the steps for using packer, there is no need to do it again.)
-```
-mkdir account-folder
-```
-Create a file under the folder with the name below.
-```
-touch account-folder/account.json
-```
-Copy the contents of the JSON service key into the account.json file.
+Once you have gotten the key, change the name of the file [account.json.example](account-folder/account.json.example) to account.json. *This file is located under the account-folder directory*. Delete the contents in the file and paste your JSON key here.
+
 
 #### Running Terraform scripts
 
