@@ -2,7 +2,7 @@
 
 The information below explains how to set up our LAMP stack. In the steps below we end up setting up a Linux Virtual Machine, the Apache package, a MySQL database(for this example we use the opensource MySQL version i.e Maria DB) and PHP.
 
-### Creating the Packer Base Image on Google Cloud Platform
+## Creating the Packer Base Image on Google Cloud Platform
 
 The first step towards setting up the Open Cart website begins by creating a base image. A base image in our case refers to snapshot of a Linux Distribution instance, that contains all the services and packages needed for the Open Cart website to run. To achieve this we use [Packer](https://www.packer.io). **Packer** is an open source tool for creating identical machine images for multiple platforms from a single source configuration. We use it to create a machine image that will be used by all deployments for Open Cart.
 
@@ -67,12 +67,12 @@ On the menu page under Compute Engine click on Images.
 You should be able to see the image opencart-base-image on the list of images.
 ![Opencart-Base-Image](docs/images/opencart-base-image.png)
 
-### Deploying the application.
+## Deploying the application.
 
 To deploy our application, we need to set up the infrastructure that will be running on Google Cloud Platform. This will require creating a virtual machine for our website, and setting up networking for the VM. This process will need to be done for every deployment, therefore requiring automation. To automate it we need a scripting language to enable us achieve infrastructure as code. To do this we choose **Terraform**. I value [terraform](https://www.terraform.io/) for its ease of use, its integration with many cloud environments, its high support; with new versions being released frequently, its quality of being free with good documentation.
 
 
-#### Setting up Google Cloud Platform for deployment.
+### Setting up Google Cloud Platform for deployment.
 
 1. Create a storage bucket
 
@@ -91,14 +91,16 @@ We need an external Static IP address through which we shall be able to access o
 Instructions for enabling an API and Services can be found [here](https://cloud.google.com/endpoints/docs/openapi/enable-api).
 Ensure that the Compute Engine API is enabled.
 
-3. Setup the service account
+4. Setup the service account 
+
+**Note:** *This service account is different from the one we created above for packer*.
 
 You may follow instructions on creating a service account as per this [link](https://cloud.google.com/iam/docs/creating-managing-service-accounts). The most critical part of the service account is the role that the account will be able to perform. Ensure that the service account has at lease admin capabilities of **Compute Admin**, **Compute Network Admin**, **Service Account User** and **Storage Object Admin**. Download the Service Account JSON key to your machine after giving the Service Account its roles.
 
 Once you have gotten the key, change the name of the file [account.json.example](account-folder/account.json.example) to account.json. *This file is located under the account-folder directory*. Delete the contents in the file and paste your JSON key here.
 
 
-#### Running Terraform scripts
+### Running Terraform scripts
 
 1. Pass environment variables
 
@@ -138,3 +140,51 @@ After running the command above you can visit your infrastructure and check whet
 
 **Note**
 - If you have an issue with running the `terraform init` command when setting up the environment variables, sometimes deleting the .terraform folder that is created locally on the folder where you ran the command, will help.
+
+## Installing Opencart
+
+This step considers that that you have mapped your domain to the IPv4 address that we created in step 2 of [Setting up Google Cloud Platform for deployment](#setting-up-google-cloud-platform-for-deployment). I provide documentation on doing this [here](https://docs.google.com/document/d/16RkZ9iCD996bVDlCvf0n7sVgz3dM6uMIsmZ8xaMLvSg/edit?usp=sharing).
+
+1. Accept the License Agreement
+
+First start by reading and accepting the license agreement
+![License-Agreement-Image](docs/images/opencart-license.png)
+
+2. Visit the Pre-Installation page and continue.
+
+Click the continue button on the Pre-Installation page if all checks out.
+![Pre-Installation-Page](docs/images/opencart-pre-installation.png)
+
+3. Visit the configuration page and input the required fields.
+
+    - For the database connection details, it is necesary that you provide the Username of the opencart mysql user, the opencart user's password and the database name that you provided in Step 4 of [Creating the Packer Base Image on Google Cloud Platform](#creating-the-packer-base-image-on-google-cloud-platform). Do not provide the root user's credentials.
+    - Create new credentials for an admin for you site. 
+
+![Configuration-page](docs/images/opencart-configuration.png)
+
+4. This should take you to the installation complete page below
+
+![Installation-complete-page](docs/images/opencart-installation-complete.png)
+
+5. After installation you need to ssh into your VM and delete the install directory, as well as move the storage directory out of the web directory. These are application specific requirements.
+
+    - SSH into the instance from your console
+    ![SSH-Image](docs/images/ssh-vm-image.png)
+    - Change directory into where opencart files and folders were installed and delete the directory
+    ```
+    cd /var/www/html
+    sudo rm -rf install
+    ```
+    - Change direcrtory to system and move the storage directory
+    ```
+    cd /var/www/html/system
+    sudo mv storage /var/www/
+    ```
+6. For the storage directory that you moved in step 5 you also need to change some configurations as per the application instructions
+
+    - Edit the config.php and admin/config.php files as shown below: 
+![Storage-Instructions](docs/images/admin-security-requirements.png) 
+
+7. You can now use the application and install data by visiting the admin page on /admin/. Get more documentation from https://www.opencart.com/
+
+
